@@ -22,5 +22,6 @@ class StudentRepository extends ServiceEntityRepository
     public function save(Student $student)
     {
         $this->getEntityManager()->persist($student);
+        $this->getEntityManager()->flush();
     }
 }
