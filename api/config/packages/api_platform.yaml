@@ -1,0 +1,22 @@
+api_platform:
+    title: Student notation
+    version: 1.0.0
+    show_webby: false
+    enable_swagger: true
+    enable_swagger_ui: true
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Entity' # default configuration for annotations
+            - '%kernel.project_dir%/config/api_platform' # yaml or xml directory configuration
+    formats:
+        json:
+            mime_types: ['application/json']
+        html:
+            mime_types: ['text/html']
+    patch_formats:
+        json: ['application/json']
+    swagger:
+        versions: [3]
+    # Mercure integration, remove if unwanted
+    mercure:
+        hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'

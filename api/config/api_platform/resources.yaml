@@ -1,0 +1,97 @@
+resources:
+    App\Entity\Student:
+         collectionOperations:
+             post:
+                path: ''
+                status: 201
+         itemOperations:
+             get:
+                 path: '/{id}/average'
+                 requirements:
+                     id: '\d+'
+                 openapi_context:
+                     summary: Get average from a student
+                     responses:
+                         '200':
+                             content:
+                                 application/json:
+                                     schema:
+                                         type: object
+                                         properties:
+                                             average:
+                                                 type: numeric
+                                                 example: 15.5
+             put:
+                 path: '/{id}'
+                 method: 'PUT'
+                 requirements:
+                     id: '\d+'
+             delete:
+                path: '/{id}'
+                requirements:
+                     id: '\d+'
+             post_notes:
+                method: 'POST'
+                path: '/{id}/notes'
+                controller: 'PostNoteController::class'
+                openapi_context:
+                    summary: Create note to a student
+                    requestBody:
+                        required: true
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    properties:
+                                        value:
+                                            type: decimal
+                                            required: true
+                                            description: Value between 0 and 20
+                                            example: 15.5
+                                        category:
+                                            type: string
+                                            required: true
+                                            example: Music
+                    responses:
+                        '201':
+                            description: Note resource created
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 5
+                                            value:
+                                                type: decimal
+                                                example: 15.5
+                                            category:
+                                                type: string
+                                                example: Music
+                        '400':
+                            description: Invalid input
+                        '404':
+                            description: Student not found
+
+    App\Entity\Note:
+        shortName: 'Note'                   # optional
+        description: 'A note from a student' # optional
+        collectionOperations: []
+        itemOperations:
+            get:
+                path: '/notes/average'
+                openapi_context:
+                    summary: Get average from all student
+                    parameters: []
+                    responses:
+                        '200':
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            average:
+                                                type: numeric
+                                                example: 15.5
+
