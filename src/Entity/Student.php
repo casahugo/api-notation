@@ -124,23 +124,11 @@ class Student
         return $this;
     }
 
-    public function getNotes()
-    {
-        return $this->notes;
-    }
-
     public function addNotes(Note $note): self
     {
         $note->student = $this;
         $this->notes->add($note);
 
-        return $this;
-    }
-
-    public function removeNotes(Note $note): self
-    {
-        $this->notes->removeElement($note);
-        $note->student = null;
         return $this;
     }
 }
