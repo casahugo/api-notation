@@ -37,7 +37,12 @@ class PostStudentController
         $errors = $this->validator->validate($student);
 
         if (count($errors) > 0) {
-            return new JsonResponse([], 400);
+            $response = [];
+            foreach ($errors as $error) {
+                $response[] = (string) $error;
+            }
+
+            return new JsonResponse(['message' => $response], 400);
         }
 
         $this->studentRepository->save($student);

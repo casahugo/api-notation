@@ -4,11 +4,10 @@ executors:
     docker:
       - image: php:7.4-cli-alpine
       - image: circleci/postgres:9.6.2-alpine
-           environment:
-               POSTGRES_USER: api-platform
-               POSTGRES_DB: api_test
-               POSTGRES_PASS: !ChangeMe!
-               POSTGRES_HOST: db
+        environment:
+          POSTGRES_USER: api-platform
+          POSTGRES_DB: api_test
+          POSTGRES_PASSWORD: ChangeMe
     working_directory: ~/repo
 
 jobs:
@@ -20,18 +19,19 @@ jobs:
           command: apk add git openssh-client curl
       - checkout
       - restore_cache:
-          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}-all
       - run:
           name: composer
           command: |
             if [[ ! -f vendor/autoload.php ]]; then
                 curl https://getcomposer.org/composer.phar --location --silent  --output /usr/bin/composer; \
                 chmod +x /usr/bin/composer; \
+                composer self-update
                 composer global require hirak/prestissimo; \
                 composer install --no-progress --no-interaction; \
             fi
       - save_cache:
-          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}-all
           paths:
             - ./vendor
       - persist_to_workspace:
@@ -58,7 +58,6 @@ jobs:
           name: phpcs
           command: vendor/bin/phpcs
 
-
   phpunit:
     executor: php
     steps:
@@ -66,16 +65,41 @@ jobs:
           name: Install alpine requirements for checkout.
           command: apk add git openssh-client curl
       - checkout
+      - run:
+          name: Install PostgreSQL client tools
+          command: |
+              apk add php-pdo_pgsql
+      - run:
+          name: Install and enable pdo_pgsql php extension
+          command: |
+              apk add postgresql-dev
+              docker-php-ext-install pdo pdo_pgsql
       - attach_workspace:
           at: .
       - run:
           name: Cache warmup
           command: bin/console cache:warmup -e test
       - run:
+          name: composer
+          command: |
+            curl https://getcomposer.org/composer.phar --location --silent  --output /usr/bin/composer; \
+            chmod +x /usr/bin/composer; \
+            composer self-update
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+              for i in `seq 1 10`;
+              do
+                nc -z localhost 5432 && echo Success && exit 0
+                echo -n .
+                sleep 1
+              done
+              echo Failed waiting for Postgres && exit 1
+      - run:
           name: phpunit
           command: vendor/bin/simple-phpunit
-      - store_test_results:
-          path: phpunit-result
+          environment:
+            DATABASE_URL: postgres://api-platform:ChangeMe@localhost:5432/api_test
 
 workflows:
   version: '2.1'
