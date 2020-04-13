@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Student;
 
+use App\Repository\NoteRepository;
 use App\Repository\StudentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

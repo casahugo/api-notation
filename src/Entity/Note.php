@@ -60,6 +60,7 @@ class Note
 
     /**
      * @ORM\ManyToOne(targetEntity="Student", inversedBy="note")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     public $student;
 

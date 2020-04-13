@@ -74,7 +74,7 @@ class Student
     private $birthday;
 
     /**
-     * @ORM\OneToMany(targetEntity="Note", mappedBy="student", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Note", mappedBy="student", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $notes;
 
@@ -124,6 +124,11 @@ class Student
         return $this;
     }
 
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
     public function addNotes(Note $note): self
     {
         $note->student = $this;
@@ -134,9 +139,8 @@ class Student
 
     public function removeNotes(Note $note): self
     {
+        $this->notes->removeElement($note);
         $note->student = null;
-        $this->notes->remove($note);
-
         return $this;
     }
 }

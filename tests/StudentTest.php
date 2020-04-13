@@ -48,19 +48,7 @@ class StudentTest extends ApiTestCase
 
     public function testPutStudent(): void
     {
-        $client = static::createClient();
-
-        $response = $client->request('POST', '/students', [
-            'json' => [
-                'firstname' => 'John',
-                'lastname' => 'Smith',
-                'birthday' => '10/11/1990',
-            ],
-        ]);
-
-        $body = json_decode($response->getContent(), true);
-
-        $response = $client->request('PUT', '/students/'.$body['id'], [
+        $response = static::createClient()->request('PUT', '/students/1', [
             'json' => [
                 'firstname' => 'Jane',
                 'lastname' => 'Doe',
@@ -71,7 +59,6 @@ class StudentTest extends ApiTestCase
         $body = json_decode($response->getContent(), true);
 
         $this->assertResponseStatusCodeSame(200);
-
         $this->assertSame('Jane', $body['firstname']);
         $this->assertSame('Doe', $body['lastname']);
         $this->assertSame('1992-05-11', $body['birthday']);
@@ -79,19 +66,7 @@ class StudentTest extends ApiTestCase
 
     public function testDeleteStudent(): void
     {
-        $client = static::createClient();
-
-        $response = $client->request('POST', '/students', [
-            'json' => [
-                'firstname' => 'John',
-                'lastname' => 'Smith',
-                'birthday' => '10/11/1990',
-            ],
-        ]);
-
-        $body = json_decode($response->getContent(), true);
-
-        $client->request('DELETE', '/students/'.$body['id']);
+        static::createClient()->request('DELETE', '/students/1');
 
         $this->assertResponseStatusCodeSame(204);
     }
