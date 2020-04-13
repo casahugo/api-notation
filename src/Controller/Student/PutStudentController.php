@@ -7,20 +7,14 @@ namespace App\Controller\Student;
 use App\Repository\StudentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PutStudentController
 {
-    /**
-     * @var StudentRepository
-     */
-    private $studentRepository;
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private StudentRepository $studentRepository;
+
+    private ValidatorInterface $validator;
 
     public function __construct(StudentRepository $studentRepository, ValidatorInterface $validator)
     {
@@ -30,12 +24,8 @@ class PutStudentController
 
     /**
      * @Route("/students/{id}", name="put_student", methods={"put"})
-     *
-     * @return JsonResponse
-     *
-     * @throws \Exception
      */
-    public function __invoke(int $id, Request $request): Response
+    public function __invoke(int $id, Request $request): JsonResponse
     {
         $student = $this->studentRepository->find($id);
 
@@ -52,7 +42,7 @@ class PutStudentController
         $errors = $this->validator->validate($student);
 
         if (count($errors) > 0) {
-            return new JsonResponse((string) $errors, 400);
+            return new JsonResponse(['errors' => null], 400);
         }
 
         $this->studentRepository->save($student);

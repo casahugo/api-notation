@@ -13,14 +13,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PostNoteController
 {
-    /**
-     * @var StudentRepository
-     */
-    private $studentRepository;
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private StudentRepository $studentRepository;
+
+    private ValidatorInterface $validator;
 
     public function __construct(StudentRepository $studentRepository, ValidatorInterface $validator)
     {
@@ -47,10 +42,10 @@ class PostNoteController
         $errors = $this->validator->validate($note);
 
         if (count($errors) > 0) {
-            return new JsonResponse((string) $errors, 400);
+            return new JsonResponse([], 400);
         }
 
-        $student->addNotes($note);
+        $student->saveNote($note);
 
         $this->studentRepository->save($student);
 

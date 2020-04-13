@@ -35,7 +35,7 @@ class NoteTest extends ApiTestCase
 
         $body = json_decode($response->getContent(), true);
 
-        $response = $client->request('POST', '/students/'.$body['id'].'/notes', [
+        $response = $client->request('POST', '/students/' . $body['id'] . '/notes', [
             'json' => [
                 'value' => 13.5,
                 'category' => 'Mathemactis',

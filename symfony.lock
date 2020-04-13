@@ -218,6 +218,12 @@
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
     },
+    "phpstan/phpstan": {
+        "version": "0.12.18"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "0.12.5"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -247,6 +253,15 @@
     },
     "sebastian/recursion-context": {
         "version": "4.0.0"
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
+        }
     },
     "symfony/asset": {
         "version": "v4.4.2"

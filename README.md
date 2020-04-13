@@ -17,9 +17,11 @@ Pré-requis
 - [Docker](https://docs.docker.com/install/#supported-platforms) >= 18.06.0
 - [Docker compose](https://docs.docker.com/compose/install) >= 1.25
 
-Pour démarrer la stack Docker, exécuter :
+Pour démarrer cloner le dépôt et exécuter la stack Docker  :
 
 ```bash
+git clone git@github.com:anthHugo/api-notation.git
+cd api-notation/
 make install
 ```
 

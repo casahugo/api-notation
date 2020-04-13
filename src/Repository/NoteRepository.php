@@ -21,7 +21,7 @@ class NoteRepository extends ServiceEntityRepository
 
     public function getAverageByStudentId(int $studentId): float
     {
-        return number_format(
+        return round(
             $this->createQueryBuilder('n')
                 ->select('AVG(n.value) as average')
                 ->where('n.student = :studentId')
@@ -34,7 +34,7 @@ class NoteRepository extends ServiceEntityRepository
 
     public function getAverage(): float
     {
-        return number_format(
+        return round(
             $this->createQueryBuilder('n')
                 ->select('AVG(n.value)')
                 ->getQuery()

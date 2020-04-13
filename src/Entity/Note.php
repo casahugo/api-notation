@@ -26,7 +26,7 @@ class Note
      *     }
      * )
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @var float
@@ -42,7 +42,7 @@ class Note
      *     }
      * )
      */
-    private $value;
+    private ?float $value;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -56,13 +56,13 @@ class Note
      *     }
      * )
      */
-    private $category;
+    private ?string $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="Student", inversedBy="note")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    public $student;
+    public ?Student $student;
 
     public function getId(): ?int
     {

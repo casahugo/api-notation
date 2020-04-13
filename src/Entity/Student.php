@@ -7,6 +7,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,7 +30,7 @@ class Student
      *     }
      * )
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -43,7 +44,7 @@ class Student
      *     }
      * )
      */
-    private $lastname;
+    private ?string $lastname;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -57,7 +58,7 @@ class Student
      *     }
      * )
      */
-    private $firstname;
+    private ?string $firstname;
 
     /**
      * @ORM\Column(type="date")
@@ -66,17 +67,17 @@ class Student
      *     attributes={
      *         "openapi_context"={
      *             "type"="string",
-     *             "example"="1990/10/10"
+     *             "example"="1990-10-10"
      *         }
      *     }
      * )
      */
-    private $birthday;
+    private ?\DateTimeInterface $birthday;
 
     /**
      * @ORM\OneToMany(targetEntity="Note", mappedBy="student", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $notes;
+    private Collection $notes;
 
     public function __construct()
     {
@@ -124,10 +125,10 @@ class Student
         return $this;
     }
 
-    public function addNotes(Note $note): self
+    public function saveNote(Note $note): self
     {
         $note->student = $this;
-        $this->notes->add($note);
+        $this->notes[] = $note;
 
         return $this;
     }

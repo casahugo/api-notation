@@ -8,20 +8,14 @@ use App\Entity\Student;
 use App\Repository\StudentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PostStudentController
 {
-    /**
-     * @var StudentRepository
-     */
-    private $studentRepository;
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private StudentRepository $studentRepository;
+
+    private ValidatorInterface $validator;
 
     public function __construct(StudentRepository $studentRepository, ValidatorInterface $validator)
     {
@@ -31,10 +25,6 @@ class PostStudentController
 
     /**
      * @Route("/students", name="post_student", methods={"post"})
-     *
-     * @return Response
-     *
-     * @throws \Exception
      */
     public function __invoke(Request $request): JsonResponse
     {
@@ -47,7 +37,7 @@ class PostStudentController
         $errors = $this->validator->validate($student);
 
         if (count($errors) > 0) {
-            return new Response((string) $errors, 400);
+            return new JsonResponse([], 400);
         }
 
         $this->studentRepository->save($student);

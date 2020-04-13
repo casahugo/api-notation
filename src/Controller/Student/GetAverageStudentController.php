@@ -11,10 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GetAverageStudentController
 {
-    /**
-     * @var NoteRepository
-     */
-    private $noteRepository;
+    private NoteRepository $noteRepository;
 
     public function __construct(NoteRepository $noteRepository)
     {
