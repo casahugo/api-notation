@@ -15,9 +15,6 @@ bash:
 phpunit:
 	docker-compose exec php vendor/bin/simple-phpunit --configuration phpunit.xml.dist
 
-fixer:
-	docker-compose exec php vendor/bin/php-cs-fixer fix
-
 linter: phpcs phpstan
 
 phpstan:
