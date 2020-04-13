@@ -10,7 +10,7 @@ services:
   php:
     build:
       context: ./
-      target: api_platform_php_dev
+      target: api_platform_php
       <<: *api-cache-from
     image: ${PHP_IMAGE:-quay.io/api-platform/php}
     healthcheck:

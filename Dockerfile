@@ -10,7 +10,7 @@ ARG VARNISH_VERSION=6.3
 
 
 # "php" stage
-FROM php:${PHP_VERSION}-fpm-alpine AS api_platform_php_dev
+FROM php:${PHP_VERSION}-fpm-alpine AS api_platform_php
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -129,7 +129,7 @@ WORKDIR /srv/api/public
 
 COPY --from=api_platform_php /srv/api/public ./
 
-FROM api_platform_php as api_platform_php_dev
+FROM api_platform_php as api_platform_php
 
 # "varnish" stage
 # does not depend on any of the above stages, but placed here to keep everything in one Dockerfile
