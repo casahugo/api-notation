@@ -10,7 +10,7 @@ services:
   php:
     build:
       context: ./
-      target: api_platform_php
+      target: api_platform_php_dev
       <<: *api-cache-from
     image: ${PHP_IMAGE:-quay.io/api-platform/php}
     healthcheck:
@@ -49,18 +49,18 @@ services:
 
   db:
     image: postgres:12-alpine
+    restart: always
     environment:
       - POSTGRES_DB=api
       - POSTGRES_PASSWORD=!ChangeMe!
       - POSTGRES_USER=api-platform
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - db-data:/var/lib/postgresql/data:rw
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./api/docker/db/data:/var/lib/postgresql/data:rw
     ports:
-      - target: 5432
-        published: 5432
-        protocol: tcp
+      - "5432:5432"
 
 volumes:
   db-data: {}

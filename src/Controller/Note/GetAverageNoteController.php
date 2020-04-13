@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Note;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\NoteRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GetAverageNoteController extends AbstractController
+class GetAverageNoteController
 {
     /**
-     * @Route("/notes/average", name="get_notes_average", methods={"get"})
-     * @param Request $request
-     * @return Response
+     * @var NoteRepository
      */
-    public function __invoke(Request $request): Response
+    private $noteRepository;
+
+    public function __construct(NoteRepository $noteRepository)
     {
-        return new Response(null, 200);
+        $this->noteRepository = $noteRepository;
+    }
+
+    /**
+     * @Route("/notes/average", name="get_notes_average", methods={"get"})
+     */
+    public function __invoke(Request $request): JsonResponse
+    {
+        return new JsonResponse(['average' => $this->noteRepository->getAverage()], 200);
     }
 }

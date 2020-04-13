@@ -4,21 +4,60 @@ declare(strict_types=1);
 
 namespace App\Controller\Note;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Note;
+use App\Repository\StudentRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PostNoteController extends AbstractController
+class PostNoteController
 {
     /**
-     * @Route("/students/{id}/notes", name="post_notes", methods={"post"})
-     * @param int $id
-     * @param Request $request
-     * @return Response
+     * @var StudentRepository
      */
-    public function __invoke(int $id, Request $request): Response
+    private $studentRepository;
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    public function __construct(StudentRepository $studentRepository, ValidatorInterface $validator)
     {
-        return new Response(null, 200);
+        $this->studentRepository = $studentRepository;
+        $this->validator = $validator;
+    }
+
+    /**
+     * @Route("/students/{id}/notes", name="post_notes", methods={"post"})
+     */
+    public function __invoke(int $id, Request $request): JsonResponse
+    {
+        $student = $this->studentRepository->find($id);
+
+        if (\is_null($student)) {
+            return new JsonResponse('Student not found', 404);
+        }
+
+        $note = (new Note())
+            ->setValue($request->get('value', null))
+            ->setCategory($request->get('category', ''))
+        ;
+
+        $errors = $this->validator->validate($note);
+
+        if (count($errors) > 0) {
+            return new JsonResponse((string) $errors, 400);
+        }
+
+        $student->addNotes($note);
+
+        $this->studentRepository->save($student);
+
+        return new JsonResponse([
+            'id' => $note->getId(),
+            'value' => $note->getValue(),
+            'category' => $note->getCategory(),
+        ], 201);
     }
 }

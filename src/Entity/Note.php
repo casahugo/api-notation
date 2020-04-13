@@ -29,7 +29,7 @@ class Note
     private $id;
 
     /**
-     * @var float $value
+     * @var float
      * @ORM\Column(type="float")
      * @Assert\Range(min=0, max=20, invalidMessage="value must be between 0 and 20")
      * @Assert\NotNull
@@ -61,7 +61,7 @@ class Note
     /**
      * @ORM\ManyToOne(targetEntity="Student", inversedBy="note")
      */
-    private $student;
+    public $student;
 
     public function getId(): ?int
     {
@@ -73,7 +73,7 @@ class Note
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    public function setValue(float $value): self
     {
         $this->value = $value;
 

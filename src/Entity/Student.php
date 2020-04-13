@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -79,7 +80,7 @@ class Student
 
     public function __construct()
     {
-        //$this->notes = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +120,22 @@ class Student
     public function setBirthday(\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function addNotes(Note $note): self
+    {
+        $note->student = $this;
+        $this->notes->add($note);
+
+        return $this;
+    }
+
+    public function removeNotes(Note $note): self
+    {
+        $note->student = null;
+        $this->notes->remove($note);
 
         return $this;
     }

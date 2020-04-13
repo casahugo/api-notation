@@ -19,32 +19,27 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
-    // /**
-    //  * @return Note[] Returns an array of Note objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAverageByStudentId(int $studentId): float
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return number_format(
+            $this->createQueryBuilder('n')
+                ->select('AVG(n.value) as average')
+                ->where('n.student = :studentId')
+                ->setParameter('studentId', $studentId)
+                ->getQuery()
+                ->getSingleScalarResult(),
+            2
+        );
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Note
+    public function getAverage(): float
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return number_format(
+            $this->createQueryBuilder('n')
+                ->select('AVG(n.value)')
+                ->getQuery()
+                ->getSingleScalarResult(),
+            2,
+        );
     }
-    */
 }

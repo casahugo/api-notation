@@ -1,0 +1,5 @@
+App\Entity\Note:
+    note_{1..100}:
+        value: <numberBetween(0, 20)>
+        category: <name()>
+        student: '@student_*'

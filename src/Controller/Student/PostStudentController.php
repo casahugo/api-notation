@@ -6,6 +6,7 @@ namespace App\Controller\Student;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,10 +31,12 @@ class PostStudentController
 
     /**
      * @Route("/students", name="post_student", methods={"post"})
-     * @param Request $request
+     *
      * @return Response
+     *
+     * @throws \Exception
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): JsonResponse
     {
         $student = (new Student())
             ->setFirstname($request->get('firstname', ''))
@@ -49,6 +52,11 @@ class PostStudentController
 
         $this->studentRepository->save($student);
 
-        return new Response(null, 201);
+        return new JsonResponse([
+            'id' => $student->getId(),
+            'firstname' => $student->getFirstname(),
+            'lastname' => $student->getLastname(),
+            'birthday' => $student->getBirthday()->format('Y-m-d'),
+        ], 201);
     }
 }

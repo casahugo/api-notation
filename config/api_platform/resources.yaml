@@ -5,8 +5,18 @@ resources:
                 path: ''
                 status: 201
          itemOperations:
-             get:
+             put:
+                 path: '/{id}'
+                 method: 'PUT'
+                 requirements:
+                     id: '\d+'
+             delete:
+                path: '/{id}'
+                requirements:
+                     id: '\d+'
+             get_average:
                  path: '/{id}/average'
+                 method: 'GET'
                  requirements:
                      id: '\d+'
                  openapi_context:
@@ -21,15 +31,6 @@ resources:
                                              average:
                                                  type: numeric
                                                  example: 15.5
-             put:
-                 path: '/{id}'
-                 method: 'PUT'
-                 requirements:
-                     id: '\d+'
-             delete:
-                path: '/{id}'
-                requirements:
-                     id: '\d+'
              post_notes:
                 method: 'POST'
                 path: '/{id}/notes'

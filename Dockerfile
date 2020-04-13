@@ -10,7 +10,7 @@ ARG VARNISH_VERSION=6.3
 
 
 # "php" stage
-FROM php:${PHP_VERSION}-fpm-alpine AS api_platform_php
+FROM php:${PHP_VERSION}-fpm-alpine AS api_platform_php_dev
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -129,6 +129,7 @@ WORKDIR /srv/api/public
 
 COPY --from=api_platform_php /srv/api/public ./
 
+FROM api_platform_php as api_platform_php_dev
 
 # "varnish" stage
 # does not depend on any of the above stages, but placed here to keep everything in one Dockerfile
@@ -137,3 +138,10 @@ FROM varnish:${VARNISH_VERSION} AS api_platform_varnish
 COPY docker/varnish/conf/default.vcl /etc/varnish/default.vcl
 
 CMD ["varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-p", "http_resp_hdr_len=65536", "-p", "http_resp_size=98304"]
+
+ARG XDEBUG_VERSION=2.9.2
+RUN set -eux; \
+	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
+	pecl install xdebug-$XDEBUG_VERSION; \
+	docker-php-ext-enable xdebug; \
+	apk del .build-deps
