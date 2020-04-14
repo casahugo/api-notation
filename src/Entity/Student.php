@@ -135,6 +135,6 @@ class Student
 
     public function getNotes(): ?Collection
     {
-        $this->notes;
+        return $this->notes;
     }
 }
