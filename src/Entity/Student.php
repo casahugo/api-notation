@@ -133,7 +133,7 @@ class Student
         return $this;
     }
 
-    public function getNotes(): Collection
+    public function getNotes(): ?Collection
     {
         $this->notes;
     }
