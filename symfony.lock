@@ -166,6 +166,9 @@
     "league/html-to-markdown": {
         "version": "4.9.1"
     },
+    "monolog/monolog": {
+        "version": "1.25.3"
+    },
     "myclabs/deep-copy": {
         "version": "1.9.5"
     },
@@ -262,18 +265,6 @@
             "version": "3.0",
             "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
         }
-    },
-    "symfony/apache-pack": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "410b9325a37ef86f1e47262c61738f6202202bca"
-        },
-        "files": [
-            "public/.htaccess"
-        ]
     },
     "symfony/asset": {
         "version": "v4.4.2"
@@ -412,6 +403,23 @@
     },
     "symfony/mime": {
         "version": "v4.4.2"
+    },
+    "symfony/monolog-bridge": {
+        "version": "v4.4.7"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "a89f4cd8a232563707418eea6c2da36acd36a917"
+        },
+        "files": [
+            "config/packages/dev/monolog.yaml",
+            "config/packages/prod/monolog.yaml",
+            "config/packages/test/monolog.yaml"
+        ]
     },
     "symfony/options-resolver": {
         "version": "v4.4.2"
