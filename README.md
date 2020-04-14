@@ -10,6 +10,8 @@ Liste des fonctionnalités:
 
 Stack technique: PHP (Symfony, Api Platform, PHPUnit), Postgres, Nginx
 
+[![CircleCI](https://circleci.com/gh/anthHugo/api-notation/tree/master.svg?style=svg)](https://circleci.com/gh/anthHugo/api-notation/tree/master)
+
 ## Comment démarrer
 
 Pré-requis
