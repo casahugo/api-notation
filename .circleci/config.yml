@@ -17,6 +17,24 @@ jobs:
       - run:
           name: Install alpine requirements for checkout
           command: apk add git openssh-client curl
+      - run:
+          name: Install Ruby
+          command: |
+            apk add --no-cache --virtual build-dependencies build-base
+            apk -Uuv add --no-cache \
+              make \
+              curl \
+              groff \
+              less \
+              nodejs-npm \
+              bash \
+              python2 \
+              ruby
+            apk --no-cache add ca-certificates wget bash \
+                && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+            	&& wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
+            	&& apk add glibc-2.29-r0.apk \
+                && rm glibc-2.29-r0.apk
       - checkout
       - restore_cache:
           key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}-all

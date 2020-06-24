@@ -12,7 +12,7 @@ class StudentTest extends PactTestCase
 {
     use RecreateDatabaseTrait;
 
-    public function testPostStudent()
+    public function testPostStudent(): void
     {
         $params = [
             'firstname' => 'John',
@@ -36,7 +36,7 @@ class StudentTest extends PactTestCase
             'average' => (new Matcher())->decimal(12)
         ]);
 
-        static::assertEquals(12, $result['average']); // Make your assertions.
+        static::assertEquals(12, $result['average']);
     }
 
     public function testPutStudent(): void
@@ -61,6 +61,6 @@ class StudentTest extends PactTestCase
     {
         $result = $this->createPact('DELETE', '/students/1', [], 204);
 
-        static::assertNull($result); // Make your assertions.
+        static::assertNull($result);
     }
 }

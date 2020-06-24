@@ -99,7 +99,7 @@ abstract class PactTestCase extends TestCase
         ;
 
         $result = $this->request($method, $endpoint, $bodyRequest);
-        $builder->verify(); // This will verify that the interactions took place.
+        $builder->verify();
 
         return $result;
     }
