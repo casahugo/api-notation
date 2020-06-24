@@ -7,16 +7,6 @@
          colors="true"
          bootstrap="tests/bootstrap.php"
 >
-
-
-    <php>
-        <ini name="error_reporting" value="-1" />
-        <server name="APP_ENV" value="test" force="true" />
-        <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
-    </php>
-
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
@@ -29,9 +19,22 @@
         </whitelist>
     </filter>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
-
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
+        <env name="PACT_MOCK_SERVER_HOST" value="localhost"/>
+        <env name="PACT_MOCK_SERVER_PORT" value="7200"/>
+        <env name="PACT_CONSUMER_NAME" value="client"/>
+        <env name="PACT_CONSUMER_VERSION" value="1.0.0"/>
+        <env name="PACT_CONSUMER_TAG" value="master"/>
+        <env name="PACT_PROVIDER_NAME" value="api"/>
+        <env name="PACT_PROVIDER_HOST" value="http://api"/>
+        <env name="PACT_OUTPUT_DIR" value="var/pacts"/>
+        <env name="PACT_MOCK_SERVER_HEALTH_CHECK_TIMEOUT" value="10"/>
+        <!--<env name="PACT_BROKER_URI" value="http://localhost:8443"/>-->
+    </php>
 
 </phpunit>
